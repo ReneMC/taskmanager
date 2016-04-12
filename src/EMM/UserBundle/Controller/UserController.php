@@ -80,7 +80,7 @@ class UserController extends Controller
             return $this->redirectToRoute('emm_user_index');
         }
         
-        return $this->render('EMMUserBundle:User:add:html:twig', array('form' => $form->createView()));
+        return $this->render('EMMUserBundle:User:add.html.twig', array('form' => $form->createView()));
     }
     
     

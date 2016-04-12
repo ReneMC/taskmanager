@@ -35,9 +35,9 @@
                     <td>{{ user.createdAt | date('m-Y') }}</td>
                     <td>{{ user.updatedAt | date('d-m-Y H:i') }}</td>
                     <td>
-                        <a class="btn btn-sm btn-info" href="#">View</a>
-                        <a class="btn btn-sm btn-primary" href="#">Edit</a>
-                        <a class="btn btn-sm btn-danger" href="#">Delete</a>
+                        <a class="btn btn-sm btn-info" href="{{ path('emm_user_add') }}"><span class="glyphicon glyphicon-plus"></span></a>
+                        <a class="btn btn-sm btn-primary" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a class="btn btn-sm btn-danger" href="#"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>
                 
