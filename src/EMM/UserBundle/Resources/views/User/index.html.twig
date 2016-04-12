@@ -2,6 +2,11 @@
 
 {% block body %}
 {{ parent() }}
+{% for flashMessage in app.session.flashbag.get('mensaje') %}
+    <div class="alert alert-success" role="alert">
+        <div class="container">{{ flashMessage }}</div>
+    </div>
+{% endfor %}
 
 <div class="container">
     <div class="col-md-12">
@@ -10,15 +15,15 @@
         </div>
 
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table id="example" class="table table-striped table-hover">
                 <tr>
-                    <th>Username</th>
-                    <th>Full name</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Member since</th>
-                    <th>Updated</th>
-                    <th>Actions</th>
+                    <th>{{ 'Username'|trans}}</th>
+                    <th>{{ 'Full name'|trans}}</th>
+                    <th>{{ 'Email'|trans}}</th>
+                    <th>{{ 'Role'|trans}}</th>
+                    <th>{{ 'Member since'|trans}}</th>
+                    <th>{{ 'Updated'|trans}}</th>
+                    <th>{{ 'Actions'|trans}}</th>
                 </tr>
                 
                 {% for user in users %}
@@ -28,15 +33,15 @@
                     <td>{{ user.firstName }} {{ user.lastName}}</td>
                     <td>{{ user.email }}</td>
                     <td>
-                        {% if user.role == 'ROLE_ADMIN' %} Administrator
-                        {% elseif user.role == 'ROLE_USER' %} User
+                        {% if user.role == 'ROLE_ADMIN' %} {{ 'Administrator'|trans}}
+                        {% elseif user.role == 'ROLE_USER' %} {{ 'User'|trans}}
                         {% endif %}
                     </td>
                     <td>{{ user.createdAt | date('m-Y') }}</td>
                     <td>{{ user.updatedAt | date('d-m-Y H:i') }}</td>
                     <td>
                         <a class="btn btn-sm btn-info" href="{{ path('emm_user_add') }}"><span class="glyphicon glyphicon-plus"></span></a>
-                        <a class="btn btn-sm btn-primary" href="#"><span class="glyphicon glyphicon-pencil"></span></a>
+                        <a class="btn btn-sm btn-primary" href="{{ path('emm_user_edit', { id: user.id }) }}"><span class="glyphicon glyphicon-pencil"></span></a>
                         <a class="btn btn-sm btn-danger" href="#"><span class="glyphicon glyphicon-trash"></span></a>
                     </td>
                 </tr>

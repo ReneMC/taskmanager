@@ -74,13 +74,57 @@ class UserController extends Controller
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
-            
             $em->flush();
+            
+            $successMessage = $this->get('translator')->trans('The user has been successfully created!');
+            $this->addFlash('mensaje',$successMessage);
             
             return $this->redirectToRoute('emm_user_index');
         }
         
         return $this->render('EMMUserBundle:User:add.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function editAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('EMMUserBundle:User')->find($id);
+        
+        if(!$user){
+            throw $this->createNotFoundException('User not found');
+        }
+        
+        $form = $this->createEditForm($user);
+        
+        return $this->render('EMMUserBundle:User:edit.html.twig', array('user' => $user, 'form' => $form->createView()));
+    }
+    
+    private function createEditForm(user $entity){
+        $form = $this->createForm(new UserType(), $entity, array('action' => $this->generateUrl('emm_user_update', array('id' => $entity->getId())), 'method' => 'PUT'));
+        
+        return $form;
+    }
+    
+    public function updateAction($id, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        
+        $user = $em->getRepository('EMMUserBundle:User')->find($id);
+        
+        if(!$user){
+            throw $this->createNotFoundException('User not found');
+        }
+        
+        $form = $this->createEditForm($user);
+        $form->handleRequest($request);
+        
+        if($form->isSubmitted() && $form->isValid()){
+            $em->flush();
+            $successMessage = $this->get('translator')->trans('The user has been succesfully modified!');
+            $this->addFlash('mensaje', $successMessage);
+            
+            return $this->redirectToRoute('emm_user_index', array('id' => $user->getId()));
+        }
+        
+        return $this->render('EMMUserBundle:User:edit.html.twig',array ('user', $user, 'form' => $form->createView()));
     }
     
     
